@@ -16,16 +16,16 @@ import android.widget.Toast;
 
 import com.payu.india.Extras.PayUChecksum;
 import com.payu.india.Extras.PayUSdkDetails;
-//import com.payu.india.Model.PaymentParams;
 import com.payu.india.Model.PayuConfig;
 import com.payu.india.Model.PayuHashes;
-//import com.payu.india.Model.PostData;
 import com.payu.india.Payu.Payu;
 import com.payu.india.Payu.PayuConstants;
 import com.payu.india.Payu.PayuErrors;
 import com.payu.paymentparamhelper.PaymentParams;
 import com.payu.paymentparamhelper.PostData;
 import com.payu.payuui.Activity.PayUBaseActivity;
+
+import java.util.Random;
 
 /**
  * This activity prepares PaymentParams, fetches hashes from server and send it to PayuBaseActivity.java.
@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
     // Used when generating hash from SDK
     private PayUChecksum checksum;
     String salt = null;
+    String sUrl = "https://payu.herokuapp.com/success"; //https://payu.herokuapp.com/success https://6bf9533efc09.ngrok.io/success.html
+    String fUrl = "https://payu.herokuapp.com/failure"; //https://payu.herokuapp.com/failure https://6bf9533efc09.ngrok.io/failure.html
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,15 +173,15 @@ public class MainActivity extends AppCompatActivity {
         /*
          * Transaction Id should be kept unique for each transaction.
          * */
-        mPaymentParams.setTxnId("" + System.currentTimeMillis());
+        mPaymentParams.setTxnId( "zelkas"+new Random().nextInt(9999) );
 
         /**
          * Surl --> Success url is where the transaction response is posted by PayU on successful transaction
          * Furl --> Failre url is where the transaction response is posted by PayU on failed transaction
          */
        // mPaymentParams.setSurl(" https://www.fitternity.com/paymentsuccessandroid");
-        mPaymentParams.setSurl("https://payu.herokuapp.com/success");
-        mPaymentParams.setFurl("https://payu.herokuapp.com/failure");
+        mPaymentParams.setSurl(sUrl);
+        mPaymentParams.setFurl(fUrl);
       //  mPaymentParams.setFurl("https://www.fitternity.com/paymentsuccessandroid");
         mPaymentParams.setNotifyURL(mPaymentParams.getSurl());  //for lazy pay
 
